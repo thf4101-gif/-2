@@ -1,0 +1,6 @@
+{
+  "name": "Google Spreadsheet Viewer & Permission Inspector",
+  "description": "구글 스프레드시트 링크 권한 오류 자동 진단 및 GitHub Pages 호스팅용 실시간 데이터 뷰어",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

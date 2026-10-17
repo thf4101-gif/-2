@@ -1,0 +1,1372 @@
+/* ==========================================================================
+   학급 1인 1역할 배정 도우미 - style.css
+   Apple Human Interface Design (Cupertino & macOS Aesthetic)
+   ========================================================================== */
+
+:root {
+  /* Apple 시스템 컬러 팔레트 */
+  --apple-bg: #f5f5f7;
+  --apple-surface: #ffffff;
+  --apple-surface-translucent: rgba(255, 255, 255, 0.82);
+  --apple-text-primary: #1d1d1f;
+  --apple-text-secondary: #6e6e73;
+  --apple-text-tertiary: #86868b;
+  --apple-border: rgba(0, 0, 0, 0.08);
+  --apple-border-subtle: rgba(0, 0, 0, 0.04);
+  --apple-divider: #e5e5ea;
+
+  /* 시스템 틴트 컬러 */
+  --apple-blue: #0071e3;
+  --apple-blue-hover: #0077ed;
+  --apple-blue-active: #0062c4;
+  --apple-blue-tint: rgba(0, 113, 227, 0.09);
+  
+  --apple-green: #34c759;
+  --apple-orange: #ff9500;
+  --apple-red: #ff3b30;
+  --apple-purple: #af52de;
+  --apple-indigo: #5856d6;
+  --apple-teal: #30b0c7;
+  --apple-pink: #ff2d55;
+  --apple-yellow: #ffcc00;
+
+  /* 카드별 부드러운 Apple 그라디언트 아이콘 웰 (12종) */
+  --icon-grad-0: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  --icon-grad-1: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  --icon-grad-2: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+  --icon-grad-3: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  --icon-grad-4: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
+  --icon-grad-5: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+  --icon-grad-6: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
+  --icon-grad-7: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%);
+  --icon-grad-8: linear-gradient(135deg, #fae8ff 0%, #f5d0fe 100%);
+  --icon-grad-9: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  --icon-grad-10: linear-gradient(135deg, #ecfdf5 0%, #a7f3d0 100%);
+  --icon-grad-11: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%);
+
+  /* UI 지오메트리 & 섀도우 */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
+  --radius-full: 980px;
+
+  --shadow-ambient: 0 4px 20px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+  --shadow-hover: 0 12px 36px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03);
+  --shadow-sheet: 0 24px 60px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(0, 0, 0, 0.06);
+
+  /* 폰트 */
+  --font-system: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+}
+
+/* ==========================================================================
+   전역 설정 & 캔버스
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body.apple-theme {
+  font-family: var(--font-system);
+  background-color: var(--apple-bg);
+  color: var(--apple-text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 은은한 Apple 앰비언트 글로우 */
+.apple-background-glow {
+  position: fixed;
+  top: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0, 113, 227, 0.04) 0%, rgba(245, 245, 247, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#confetti-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.app-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 24px 20px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.print-only {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Apple 네비게이션 바 (Frosted Glass Header)
+   ========================================================================== */
+.apple-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: var(--apple-surface-translucent);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  padding: 14px 24px;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: var(--shadow-ambient);
+  margin-bottom: 28px;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.apple-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--apple-text-secondary);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.apple-icon {
+  color: var(--apple-text-primary);
+}
+
+.brand-divider {
+  color: var(--apple-border);
+}
+
+.nav-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.main-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--apple-text-primary);
+  letter-spacing: -0.025em;
+}
+
+.ios-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--apple-text-secondary);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   Apple 버튼 시스템
+   ========================================================================== */
+.apple-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  user-select: none;
+  outline: none;
+}
+
+.apple-btn:active {
+  transform: scale(0.97);
+}
+
+/* 프라이머리 버튼 (Apple Blue) */
+.apple-btn-primary {
+  background: var(--apple-blue);
+  color: #ffffff;
+}
+
+.apple-btn-primary:hover {
+  background: var(--apple-blue-hover);
+}
+
+.apple-btn-primary:active {
+  background: var(--apple-blue-active);
+}
+
+/* 세컨더리 버튼 */
+.apple-btn-secondary {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--apple-text-primary);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.apple-btn-secondary:hover {
+  background: rgba(0, 0, 0, 0.07);
+}
+
+/* 틴티드 버튼 */
+.apple-btn-tinted {
+  background: var(--apple-blue-tint);
+  color: var(--apple-blue);
+}
+
+.apple-btn-tinted:hover {
+  background: rgba(0, 113, 227, 0.15);
+}
+
+/* 터셔리 버튼 */
+.apple-btn-tertiary {
+  background: transparent;
+  color: var(--apple-text-secondary);
+}
+
+.apple-btn-tertiary:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--apple-text-primary);
+}
+
+.apple-btn-destructive-text {
+  background: transparent;
+  color: var(--apple-red);
+}
+
+.apple-btn-destructive-text:hover {
+  background: rgba(255, 59, 48, 0.08);
+}
+
+/* 아이콘 전용 버튼 */
+.apple-btn-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--apple-text-primary);
+  font-size: 0.95rem;
+}
+
+.apple-btn-icon:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.apple-btn-sm {
+  padding: 6px 14px;
+  font-size: 0.85rem;
+}
+
+.apple-btn-xs {
+  padding: 4px 10px;
+  font-size: 0.78rem;
+}
+
+/* 메인 대형 배정 버튼 */
+.btn-apple-large {
+  font-size: 1.15rem;
+  font-weight: 600;
+  padding: 14px 34px;
+  box-shadow: 0 4px 18px rgba(0, 113, 227, 0.28);
+}
+
+.btn-apple-large:hover {
+  box-shadow: 0 6px 24px rgba(0, 113, 227, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-icon-dice {
+  font-size: 1.35rem;
+  display: inline-block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-apple-large:hover .btn-icon-dice {
+  transform: rotate(180deg);
+}
+
+/* ==========================================================================
+   Apple 히어로 컨트롤 패널 (Clean Hero Card)
+   ========================================================================== */
+.apple-hero-card {
+  background: var(--apple-surface);
+  border-radius: var(--radius-xl);
+  padding: 28px 32px;
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--shadow-ambient);
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hero-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.segmented-status {
+  display: inline-flex;
+  align-items: center;
+  background: var(--apple-bg);
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  gap: 12px;
+  font-size: 0.88rem;
+}
+
+.status-segment {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.segment-label {
+  color: var(--apple-text-tertiary);
+  font-size: 0.82rem;
+}
+
+.segment-value {
+  color: var(--apple-text-primary);
+  font-weight: 600;
+}
+
+.status-divider {
+  width: 1px;
+  height: 12px;
+  background: var(--apple-divider);
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--apple-green);
+  font-weight: 500;
+}
+
+.status-indicator.warning {
+  color: var(--apple-orange);
+}
+
+.apple-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--apple-green);
+}
+
+.status-indicator.warning .apple-dot {
+  background: var(--apple-orange);
+}
+
+.hero-subtext {
+  font-size: 0.9rem;
+  color: var(--apple-text-tertiary);
+}
+
+/* 히어로 중앙 버튼 및 액션 */
+.hero-action-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.hero-sub-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* 검색창 (Apple Spotlight Style) */
+.apple-search-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding-top: 16px;
+  border-top: 1px solid var(--apple-border-subtle);
+}
+
+.apple-search-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 360px;
+}
+
+.apple-search-field input {
+  width: 100%;
+  padding: 8px 32px 8px 34px;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  background: var(--apple-bg);
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--apple-text-primary);
+  outline: none;
+  transition: all 0.2s;
+}
+
+.apple-search-field input:focus {
+  background: #ffffff;
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+}
+
+.search-symbol {
+  position: absolute;
+  left: 12px;
+  font-size: 0.85rem;
+  color: var(--apple-text-tertiary);
+  pointer-events: none;
+}
+
+.btn-clear-symbol {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--apple-text-tertiary);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.apple-counter {
+  font-size: 0.85rem;
+  color: var(--apple-text-secondary);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   상태 화면 (Empty & Loading)
+   ========================================================================== */
+.apple-empty-state {
+  text-align: center;
+  padding: 64px 24px;
+  background: var(--apple-surface);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--shadow-ambient);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.empty-icon-well {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background: var(--apple-blue-tint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+.empty-symbol {
+  font-size: 1.8rem;
+  color: var(--apple-blue);
+}
+
+.apple-empty-state h3 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--apple-text-primary);
+}
+
+.apple-empty-state p {
+  color: var(--apple-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* 로딩 인디케이터 (Apple Spinner Ring) */
+.apple-loading-state {
+  text-align: center;
+  padding: 64px 24px;
+  background: var(--apple-surface);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--shadow-ambient);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.apple-spinner-ring {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(0, 113, 227, 0.15);
+  border-top-color: var(--apple-blue);
+  border-radius: 50%;
+  animation: appleSpin 0.75s linear infinite;
+  margin-bottom: 6px;
+}
+
+@keyframes appleSpin {
+  to { transform: rotate(360deg); }
+}
+
+.apple-loading-state h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.apple-loading-state p {
+  color: var(--apple-text-secondary);
+  font-size: 0.92rem;
+}
+
+/* ==========================================================================
+   Apple 카드 그리드 (SF Cards)
+   ========================================================================== */
+.apple-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+  animation: appleFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes appleFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 개별 카드 */
+.role-card {
+  background: var(--apple-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--apple-border);
+  box-shadow: var(--shadow-ambient);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.role-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+/* 카드 헤더: 학생 번호 & 이름 */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.student-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.student-no {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--apple-bg);
+  color: var(--apple-text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.student-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--apple-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.role-tag-pill {
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  background: var(--apple-bg);
+  color: var(--apple-text-tertiary);
+}
+
+/* 카드 본문: iOS 앱 아이콘 스타일 웰 & 역할 정보 */
+.card-body {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.role-icon-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--card-icon-gradient, var(--icon-grad-0));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.85rem;
+  flex-shrink: 0;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.role-text-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.role-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--apple-text-primary);
+  letter-spacing: -0.015em;
+}
+
+.role-desc {
+  font-size: 0.82rem;
+  color: var(--apple-text-secondary);
+  line-height: 1.4;
+  word-break: keep-all;
+}
+
+/* 카드 푸터: 실천 토글 & 스왑 버튼 */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--apple-border-subtle);
+  font-size: 0.82rem;
+}
+
+.mission-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: var(--apple-text-secondary);
+  font-weight: 500;
+  user-select: none;
+}
+
+.mission-checkbox input {
+  accent-color: var(--apple-blue);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-card-action {
+  background: transparent;
+  border: none;
+  color: var(--apple-blue);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 3px 6px;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s;
+}
+
+.btn-card-action:hover {
+  background: var(--apple-blue-tint);
+}
+
+/* ==========================================================================
+   푸터 영역
+   ========================================================================== */
+.apple-footer {
+  margin-top: 56px;
+  text-align: center;
+  color: var(--apple-text-tertiary);
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.apple-footer .copyright {
+  font-size: 0.78rem;
+  color: #a1a1a6;
+}
+
+/* ==========================================================================
+   Apple Sheet 모달 (iOS Modal Presentation)
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: appleFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-sheet {
+  background: var(--apple-surface);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 560px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sheet);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  animation: appleSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-sheet.sheet-large {
+  max-width: 660px;
+}
+
+@keyframes appleSlideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.sheet-drag-handle {
+  width: 36px;
+  height: 5px;
+  background: var(--apple-divider);
+  border-radius: var(--radius-full);
+  margin: 10px auto 0;
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px 24px;
+}
+
+.modal-title-group h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--apple-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.modal-subtitle {
+  font-size: 0.85rem;
+  color: var(--apple-text-secondary);
+  margin-top: 2px;
+}
+
+.sheet-close-btn {
+  background: var(--apple-bg);
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--apple-text-tertiary);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.sheet-close-btn:hover {
+  background: var(--apple-divider);
+  color: var(--apple-text-primary);
+}
+
+/* 세그먼트 컨트롤 탭 */
+.ios-segmented-control {
+  display: flex;
+  background: var(--apple-bg);
+  padding: 3px;
+  border-radius: var(--radius-md);
+  margin: 0 24px 12px;
+  gap: 2px;
+}
+
+.segment-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--apple-text-secondary);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.segment-tab.active {
+  background: #ffffff;
+  color: var(--apple-text-primary);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.modal-body {
+  padding: 12px 24px 20px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tab-content {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tab-content.active {
+  display: flex;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: var(--apple-bg);
+  border-top: 1px solid var(--apple-border-subtle);
+  gap: 12px;
+}
+
+.balance-good {
+  color: var(--apple-green);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.balance-bad {
+  color: var(--apple-orange);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* 폼 인풋 스타일 */
+.apple-input {
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--apple-divider);
+  background: var(--apple-bg);
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--apple-text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.apple-input:focus {
+  background: #ffffff;
+  border-color: var(--apple-blue);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
+}
+
+.input-full {
+  width: 100%;
+}
+
+.apple-textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--apple-divider);
+  background: var(--apple-bg);
+  font-family: inherit;
+  font-size: 0.92rem;
+  outline: none;
+  resize: vertical;
+}
+
+.sheet-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.sheet-input-row input {
+  flex: 1;
+}
+
+.sheet-role-inputs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.input-icon-box {
+  width: 48px;
+  text-align: center;
+  font-size: 1.15rem;
+}
+
+.input-role-name {
+  width: 130px;
+}
+
+.input-role-desc {
+  flex: 1;
+  min-width: 170px;
+}
+
+.btn-full-sub {
+  width: 100%;
+}
+
+/* 리스트 그룹 (iOS Table View) */
+.apple-list-group {
+  max-height: 270px;
+  overflow-y: auto;
+  border-radius: var(--radius-md);
+  background: var(--apple-bg);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.manage-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  background: #ffffff;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+}
+
+.manage-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.manage-item-badge {
+  color: var(--apple-text-tertiary);
+  font-size: 0.8rem;
+  width: 20px;
+}
+
+.btn-remove-item {
+  background: transparent;
+  border: none;
+  color: var(--apple-text-tertiary);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.btn-remove-item:hover {
+  color: var(--apple-red);
+}
+
+.apple-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.apple-form-group label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--apple-text-secondary);
+}
+
+.form-row-2 {
+  display: flex;
+  gap: 12px;
+}
+
+.form-row-2 > div {
+  flex: 1;
+}
+
+.apple-callout-box {
+  display: flex;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--apple-blue-tint);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  color: #005bb5;
+}
+
+.callout-icon {
+  font-size: 1.1rem;
+}
+
+.apple-status-pill-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--apple-bg);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  color: var(--apple-text-secondary);
+}
+
+.apple-accordion details {
+  background: var(--apple-bg);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+}
+
+.apple-accordion summary {
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--apple-text-secondary);
+}
+
+.code-wrapper {
+  margin-top: 10px;
+  position: relative;
+}
+
+.code-wrapper pre {
+  background: #1e1e24;
+  color: #f1f2f6;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  overflow-x: auto;
+  max-height: 180px;
+}
+
+.code-wrapper button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.apple-segmented-pick {
+  display: flex;
+  gap: 12px;
+}
+
+.pick-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+/* Apple Dynamic Island 토스트 */
+.apple-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(29, 29, 31, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #ffffff;
+  padding: 10px 22px;
+  border-radius: var(--radius-full);
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: toastPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes toastPop {
+  from { opacity: 0; transform: translate(-50%, 14px) scale(0.96); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+/* ==========================================================================
+   A4 전용 인쇄 스타일 (@media print)
+   스위스 / Apple 스타일의 극도로 단정하고 세련된 게시판 안내표
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm;
+  }
+
+  .no-print,
+  .modal-backdrop,
+  #confetti-canvas,
+  .apple-background-glow,
+  .btn,
+  .apple-btn,
+  .btn-card-action,
+  .apple-search-section,
+  .hero-sub-actions {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  body.apple-theme {
+    background: #ffffff !important;
+    color: #1d1d1f !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 10.5pt;
+  }
+
+  .app-container {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .print-header {
+    text-align: center;
+    border-bottom: 1.5px solid #1d1d1f;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+  }
+
+  .print-apple-badge {
+    font-size: 8.5pt;
+    font-weight: 700;
+    color: #86868b;
+    letter-spacing: 1.5px;
+    margin-bottom: 3px;
+  }
+
+  .print-header h1 {
+    font-size: 20pt;
+    font-weight: 700;
+    color: #1d1d1f;
+    letter-spacing: -0.03em;
+    margin-bottom: 4px;
+  }
+
+  .print-meta-info {
+    font-size: 10pt;
+    font-weight: 500;
+    color: #515154;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .print-divider {
+    color: #d2d2d7;
+  }
+
+  /* 3열 4행 A4 1페이지 최적화 */
+  .apple-cards-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6mm !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .role-card {
+    border: 1px solid #d2d2d7 !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    padding: 10px 12px !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    background: #ffffff !important;
+  }
+
+  .card-header {
+    border-bottom: 1px solid #e5e5ea !important;
+    padding-bottom: 5px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .student-no {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 8.5pt !important;
+    background: #f5f5f7 !important;
+    color: #1d1d1f !important;
+    border: 1px solid #d2d2d7 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .student-name {
+    font-size: 13pt !important;
+    font-weight: 700 !important;
+    color: #1d1d1f !important;
+  }
+
+  .role-tag-pill {
+    border: 1px solid #e5e5ea !important;
+    background: #f5f5f7 !important;
+    color: #6e6e73 !important;
+    font-size: 7.5pt !important;
+  }
+
+  .card-body {
+    gap: 10px !important;
+    padding: 3px 0 !important;
+  }
+
+  .role-icon-box {
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 1.45rem !important;
+    background: #f5f5f7 !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    border: 1px solid #e5e5ea !important;
+  }
+
+  .role-title {
+    font-size: 11pt !important;
+    font-weight: 700 !important;
+    color: #1d1d1f !important;
+  }
+
+  .role-desc {
+    font-size: 8pt !important;
+    color: #6e6e73 !important;
+    line-height: 1.25 !important;
+  }
+
+  .card-footer {
+    border-top: 1px solid #f5f5f7 !important;
+    padding-top: 5px !important;
+    font-size: 8pt !important;
+  }
+
+  .mission-checkbox {
+    font-size: 8.5pt !important;
+  }
+
+  .mission-checkbox input {
+    border: 1px solid #86868b !important;
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .print-footer {
+    margin-top: 12px;
+    border-top: 1px solid #1d1d1f;
+    padding-top: 8px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .print-oath {
+    font-size: 9pt;
+    color: #515154;
+  }
+
+  .print-signatures {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-top: 8px;
+    padding: 0 4px;
+    font-size: 9.5pt;
+  }
+}
+
+/* ==========================================================================
+   반응형 모바일
+   ========================================================================== */
+@media (max-width: 768px) {
+  .apple-navbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-left {
+    justify-content: space-between;
+  }
+
+  .nav-right {
+    justify-content: center;
+  }
+
+  .apple-hero-card {
+    padding: 20px 18px;
+  }
+
+  .btn-apple-large {
+    width: 100%;
+    font-size: 1.05rem;
+  }
+
+  .apple-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .apple-search-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .apple-search-field {
+    max-width: 100%;
+  }
+}
